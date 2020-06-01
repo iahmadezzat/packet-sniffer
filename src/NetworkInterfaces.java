@@ -27,7 +27,6 @@ public class NetworkInterfaces extends JFrame {
 
         Sniffer.NETWORK_INTERFACES = JpcapCaptor.getDeviceList();
         for (int i = 0; i < Sniffer.NETWORK_INTERFACES.length; i++) {
-
             interfacesData += "<tr>\n";
             interfacesData += "<td align=\"center\" style=\"padding-top: 7px; border: 1px solid black;\">" + "<h1>" + i + "</h1>" + "</td>\n";
             interfacesData += "<td align=\"left\" style=\"padding-top: 7px; border: 1px solid black;\"><u>Name</u>: " + Sniffer.NETWORK_INTERFACES[i].name.substring(1) + "<br/>\n";
@@ -37,8 +36,8 @@ public class NetworkInterfaces extends JFrame {
 
             interfacesData += "<u>MAC Address</u>: ";
             byte[] macAddress = Sniffer.NETWORK_INTERFACES[i].mac_address;
-            for (int j = 0; j < Sniffer.NETWORK_INTERFACES.length - 1; j++)
-                interfacesData += Integer.toHexString(macAddress[j] & 0xff) + ":";
+            for (int j = 0; j < macAddress.length; j++)
+                interfacesData += String.format("%02X%s", macAddress[j], (j < macAddress.length - 1) ? "-" : "");
             interfacesData += "<br/>\n";
 
             NetworkInterfaceAddress[] NIA = Sniffer.NETWORK_INTERFACES[i].addresses;
@@ -46,7 +45,6 @@ public class NetworkInterfaces extends JFrame {
             interfacesData += "<u>Subnet Mask</u>: " + NIA[1].subnet + "<br/>\n";
             interfacesData += "<u>Broadcast Address</u>: " + NIA[1].broadcast + "<br/>\n";
             interfacesData += "\t </td>\n" + "</tr>\n";
-
         }
         interfacesData += "</table>";
     }
