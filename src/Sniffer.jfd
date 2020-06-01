@@ -1,0 +1,157 @@
+JFDML JFormDesigner: "7.0.1.0.272" Java: "11.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {comp jScrollPane4::l::703:x, comp jToolBar1::l::703:x, comp jScrollPane1::l:::x, comp jScrollPane2::l:::x, seq {space :::p, par l {comp jLabel2:::p::p, comp jLabel3::l:p::p}, space :::x}}"
+			"$verticalGroup": "par l {seq l {comp jToolBar1:::p:25:p, space :::p, comp jScrollPane4:::p:312:p, space u:::p, comp jLabel2:::p:9:p, space :::x, comp jScrollPane1:::p:140:p, space :::p, comp jLabel3:::p::p, space :p:1:p, comp jScrollPane2:::p:108:p}}"
+		} ) {
+			name: "this"
+			"defaultCloseOperation": 3
+			"title": "Packet Sniffer Open Beta v1.0"
+			"name": "Packet Sniffer Open Beta v1.0"
+			add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+				name: "jToolBar1"
+				"rollover": true
+				add( new FormComponent( "java.awt.Button" ) {
+					name: "listButton"
+					"actionCommand": "List Interfaces"
+					"background": new java.awt.Color( 0, 0, 102, 255 )
+					"font": new java.awt.Font( "Dialog", 1, 12 )
+					"foreground": new java.awt.Color( 255, 255, 255, 255 )
+					"label": "List Interfaces"
+					"preferredSize": new java.awt.Dimension( 90, 26 )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 9
+					}
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "listButtonActionPerformed", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "jLabel1"
+					"text": " Filter"
+				} )
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "filter_options"
+					"model": new javax.swing.DefaultComboBoxModel {
+						selectedItem: "---"
+						addElement( "---" )
+						addElement( "TCP" )
+						addElement( "UDP" )
+						addElement( "ICMP" )
+					}
+					"preferredSize": new java.awt.Dimension( 320, 24 )
+					auxiliary() {
+						"JavaCodeGenerator.typeParameters": "String"
+						"JavaCodeGenerator.variableModifiers": 9
+					}
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "filter_optionsActionPerformed", true ) )
+				} )
+				add( new FormComponent( "java.awt.Button" ) {
+					name: "captureButton"
+					"background": new java.awt.Color( 0, 204, 0, 255 )
+					"font": new java.awt.Font( "Dialog", 1, 12 )
+					"label": "Capture"
+					"preferredSize": new java.awt.Dimension( 83, 24 )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 9
+					}
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "captureButtonActionPerformed", true ) )
+				} )
+				add( new FormComponent( "java.awt.Button" ) {
+					name: "stopButton"
+					"background": new java.awt.Color( 255, 0, 51, 255 )
+					"font": new java.awt.Font( "Dialog", 1, 12 )
+					"label": "Stop"
+					"preferredSize": new java.awt.Dimension( 83, 24 )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 9
+					}
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "stopButtonActionPerformed", true ) )
+				} )
+				add( new FormComponent( "java.awt.Button" ) {
+					name: "saveButton"
+					"label": "Save"
+					"preferredSize": new java.awt.Dimension( 83, 24 )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 9
+					}
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "saveButtonActionPerformed", true ) )
+				} )
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "jScrollPane4"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "jTable1"
+					"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
+						add( "No." )
+						add( "Length" )
+						add( "Source" )
+						add( "Destination" )
+						add( "Protocol" )
+					}, new java.util.Vector {
+						add( class java.lang.Integer )
+						add( class java.lang.Object )
+						add( class java.lang.Object )
+						add( class java.lang.Object )
+						add( class java.lang.String )
+					}, new java.util.Vector {
+						add( true )
+						add( true )
+						add( true )
+						add( true )
+						add( true )
+					}, new java.util.Vector {
+						add( null )
+						add( null )
+						add( null )
+						add( null )
+						add( null )
+					} )
+					"rowHeight": 20
+					auxiliary() {
+						"JavaCodeGenerator.customCreateCode": "new javax.swing.JTable(){\npublic boolean isCellEditable(int row, int column){  \n          return false;  \n      }\n};"
+						"JavaCodeGenerator.variableModifiers": 9
+					}
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "jTable1MouseClicked", true ) )
+				} )
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "jScrollPane1"
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "jTextArea1"
+					"editable": false
+					"columns": 20
+					"rows": 5
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 9
+					}
+				} )
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "jScrollPane2"
+				"horizontalScrollBarPolicy": 31
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "jTextArea2"
+					"editable": false
+					"columns": 20
+					"rows": 5
+				} )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "jLabel2"
+				"text": "Packet info:"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "jLabel3"
+				"text": "Hex view:"
+			} )
+			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "jMenuBar1"
+			}
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 705, 695 )
+			"location": new java.awt.Point( 365, 25 )
+		} )
+	}
+}

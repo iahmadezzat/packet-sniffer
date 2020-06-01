@@ -1,0 +1,41 @@
+JFDML JFormDesigner: "7.0.1.0.272" Java: "11.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq {space :::p, par l {seq l {space :0:0:x, comp jLabel1:::p:224:p, space :::p, comp textField1:::p:70:p, space :p:47:p, comp jButton1:::p:75:p}, comp jScrollPane1::l:::x}, space :::p}}"
+			"$verticalGroup": "par l {seq l {space :p:56:p, comp jScrollPane1:::p:352:p, space :::x, par l {comp textField1::t:::x, comp jButton1::t:p:33:p, comp jLabel1:::::x}, space :::p}}"
+		} ) {
+			name: "this"
+			"defaultCloseOperation": 3
+			"title": "Interfaces List"
+			"name": "Interfaces list"
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "jScrollPane1"
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "jTextArea1"
+					"editable": false
+					"columns": 20
+					"rows": 5
+				} )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "jButton1"
+				"text": "Select"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jButton1ActionPerformed", true ) )
+			} )
+			add( new FormComponent( "java.awt.TextField" ) {
+				name: "textField1"
+				addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "textField1KeyPressed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "jLabel1"
+				"text": "Please select the interface number!"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 400, 300 )
+			"location": new java.awt.Point( 0, 0 )
+		} )
+	}
+}
