@@ -19,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
 
+import javax.xml.bind.DatatypeConverter;
+
 public class Sniffer extends JFrame {
 
     public Sniffer() {
@@ -36,11 +38,6 @@ public class Sniffer extends JFrame {
     List<Packet> packets = new ArrayList<>();
 
     public static void main(String[] args) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -51,9 +48,7 @@ public class Sniffer extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         EventQueue.invokeLater(() -> new Sniffer().setVisible(true));
     }
 
@@ -77,8 +72,8 @@ public class Sniffer extends JFrame {
                     }
                     CAP.close();
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 return 0;
             }
@@ -92,10 +87,7 @@ public class Sniffer extends JFrame {
 
 
     public static String convertToHex(String text) throws UnsupportedEncodingException {
-        byte[] myBytes = text.getBytes(StandardCharsets.UTF_8);
-//        byte[] myBytes = text.getBytes("UTF-8");
-//        return DatatypeConverter.printHexBinary(myBytes);
-        return "";
+        return DatatypeConverter.printHexBinary(text.getBytes(StandardCharsets.UTF_8));
     }
 
     public static String hexRefactoring(String text) {
@@ -387,7 +379,6 @@ public class Sniffer extends JFrame {
     private void exportButtonAction(ActionEvent evt) {
         THREAD = new ThreadManager() {
             public Object construct() {
-
                 writer = null;
                 try {
                     CAP = JpcapCaptor.openDevice(NETWORK_INTERFACES[INDEX], 65535, false, 20);
@@ -396,9 +387,9 @@ public class Sniffer extends JFrame {
                     Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                for (int i = 0; i < ITERATOR; i++) {
+                for (int i = 0; i < ITERATOR; i++)
                     writer.writePacket(packets.get(i));
-                }
+                writer.close();
 
                 return 0;
             }
@@ -409,7 +400,4 @@ public class Sniffer extends JFrame {
         };
         THREAD.start();
     }
-
-//    private void filterOptionsAction(ActionEvent evt) {
-//    }
 }
