@@ -4,6 +4,7 @@
     <root id="archive" name="Packet Sniffer.jar">
       <element id="module-output" name="Packet Sniffer" />
       <element id="extracted-dir" path="$PROJECT_DIR$/.idea/libraries/jpcap.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/.idea/libraries/jaxb-api-2.2.3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

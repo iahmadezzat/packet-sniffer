@@ -48,7 +48,6 @@ public class Sniffer extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         EventQueue.invokeLater(() -> new Sniffer().setVisible(true));
     }
 
@@ -84,7 +83,6 @@ public class Sniffer extends JFrame {
         };
         THREAD.start();
     }
-
 
     public static String convertToHex(String text) throws UnsupportedEncodingException {
         return DatatypeConverter.printHexBinary(text.getBytes(StandardCharsets.UTF_8));
@@ -388,8 +386,7 @@ public class Sniffer extends JFrame {
                 }
 
                 for (int i = 0; i < ITERATOR; i++)
-                    writer.writePacket(packets.get(i));
-                writer.close();
+                    writer.writePacket(packets.get(1));
 
                 return 0;
             }

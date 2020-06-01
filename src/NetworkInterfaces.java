@@ -8,7 +8,6 @@ import jpcap.*;
 
 public class NetworkInterfaces extends JFrame {
 
-    private static int COUNTER = 0;
     private String interfacesData = "";
 
     public NetworkInterfaces() {
@@ -48,7 +47,6 @@ public class NetworkInterfaces extends JFrame {
             interfacesData += "<u>Broadcast Address</u>: " + NIA[1].broadcast + "<br/>\n";
             interfacesData += "\t </td>\n" + "</tr>\n";
 
-            COUNTER++;
         }
         interfacesData += "</table>";
     }
@@ -56,24 +54,21 @@ public class NetworkInterfaces extends JFrame {
     public void ChooseInterface() {
 
         int choice = Integer.parseInt(selectionTextField.getText());
-        if (choice >= 0 && choice < COUNTER) {
+        if (choice >= 0 && choice < Sniffer.NETWORK_INTERFACES.length) {
             Sniffer.INDEX = choice;
             Sniffer.captureButton.setEnabled(true);
             Sniffer.filterOptions.setEnabled(true);
             Sniffer.stopButton.setEnabled(true);
             Sniffer.exportButton.setEnabled(true);
         } else {
-            String errorMessage = "Select an Interface between 0 and " + (COUNTER - 1) + "!";
+            String errorMessage = "Select an Interface between 0 and " + (Sniffer.NETWORK_INTERFACES.length - 1) + "!";
             JOptionPane.showMessageDialog(null, errorMessage);
             new NetworkInterfaces();
         }
-
         selectionTextField.setText("");
-
     }
 
     public static void main(String[] args) {
-
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -103,10 +98,9 @@ public class NetworkInterfaces extends JFrame {
         JLabel messageLabel = new JLabel();
         JEditorPane interfacesPane = new JEditorPane("text/html", interfacesData);
 
-        interfacesPane.setEditable(false);
-        setVisible(true);
-
         //======== this ========
+        setVisible(true);
+        interfacesPane.setEditable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Interfaces List");
         setName("Interfaces list");
