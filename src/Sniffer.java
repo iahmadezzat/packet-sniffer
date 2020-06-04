@@ -396,7 +396,6 @@ public class Sniffer extends JFrame {
         isCapturing = true;
         capture();
         exportButton.setEnabled(!isCapturing);
-//        captureButton.setEnabled(!isCapturing);
         filterOptions.setEnabled(!isCapturing);
         interfacesListButton.setEnabled(!isCapturing);
     }

@@ -24,11 +24,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec7ca61a-1cca-4b61-bec5-19347d82ce8c" name="Default Changelist" comment="Export function fix">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analyzer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ThreadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ThreadManager.java" afterDir="false" />
-    </list>
+    <list default="true" id="ec7ca61a-1cca-4b61-bec5-19347d82ce8c" name="Default Changelist" comment="Export function fix" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -133,7 +129,7 @@
       <workItem from="1591131233318" duration="1223000" />
       <workItem from="1591136611655" duration="28000" />
       <workItem from="1591148914589" duration="55000" />
-      <workItem from="1591214698934" duration="13603000" />
+      <workItem from="1591214698934" duration="13964000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit!">
       <created>1590975128680</created>
@@ -177,7 +173,21 @@
       <option name="project" value="LOCAL" />
       <updated>1591233788895</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Performance Improvement">
+      <created>1591233811887</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1591233811887</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Some Code Refactoring">
+      <created>1591233856169</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1591233856169</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,10 +207,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit!" />
     <MESSAGE value="Fixed Hexadecimal Conversion" />
-    <MESSAGE value="Performance Improvement" />
     <MESSAGE value="Export function fix" />
     <MESSAGE value="MAC Address bug fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="MAC Address bug fix" />
+    <MESSAGE value="Performance Improvement" />
+    <MESSAGE value="Some Code Refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Some Code Refactoring" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1165" y="563" key="#Notifications" timestamp="1590976804889">
@@ -223,10 +234,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1010" y="447" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/-1366.464.1366.728/0.0.2560.1400@0.0.2560.1400" timestamp="1590968137453" />
-    <state x="903" y="265" width="832" height="833" key="CommitChangelistDialog2" timestamp="1591233788559">
+    <state x="903" y="265" width="832" height="833" key="CommitChangelistDialog2" timestamp="1591233855844">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="903" y="265" width="832" height="833" key="CommitChangelistDialog2/-1366.464.1366.728/0.0.2560.1400@0.0.2560.1400" timestamp="1591233788559" />
+    <state x="903" y="265" width="832" height="833" key="CommitChangelistDialog2/-1366.464.1366.728/0.0.2560.1400@0.0.2560.1400" timestamp="1591233855844" />
     <state x="1060" y="455" key="FileChooserDialogImpl" timestamp="1591120748727">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -279,10 +290,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="760" y="274" key="SettingsEditor/-1366.464.1366.728/0.0.2560.1400@0.0.2560.1400" timestamp="1590980133070" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1591045512850">
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1591233871698">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/-1366.464.1366.728/0.0.2560.1400@0.0.2560.1400" timestamp="1591045512850" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/-1366.464.1366.728/0.0.2560.1400@0.0.2560.1400" timestamp="1591233871698" />
     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1590974594064">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
