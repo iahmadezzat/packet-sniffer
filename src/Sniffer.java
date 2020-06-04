@@ -9,8 +9,7 @@ import jpcap.NetworkInterface;
 import jpcap.packet.Packet;
 import jpcap.JpcapWriter;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
@@ -27,12 +26,12 @@ public class Sniffer extends JFrame {
         initComponents();
     }
 
-    ThreadManager THREAD;
-    static NetworkInterface[] NETWORK_INTERFACES;
-    static JpcapCaptor CAP;
+    ThreadManager thread;
     static int INDEX = 0;
-    private boolean isCapturing = false;
     static int ITERATOR = 0;
+    static JpcapCaptor captor;
+    private boolean isCapturing = false;
+    static NetworkInterface[] NETWORK_INTERFACES;
 
     JpcapWriter writer = null;
     List<Packet> packets = new ArrayList<>();
@@ -51,25 +50,25 @@ public class Sniffer extends JFrame {
         EventQueue.invokeLater(() -> new Sniffer().setVisible(true));
     }
 
-    public void capture() {
-        THREAD = new ThreadManager() {
-            public Object construct() {
+    void capture() {
+        thread = new ThreadManager() {
+            Object construct() {
                 try {
-                    CAP = JpcapCaptor.openDevice(NETWORK_INTERFACES[INDEX], 65535, false, 20);
+                    captor = JpcapCaptor.openDevice(NETWORK_INTERFACES[INDEX], 65535, false, 20);
 
                     if ("UDP".equals(Objects.requireNonNull(filterOptions.getSelectedItem()).toString())) {
-                        CAP.setFilter("udp", true);
+                        captor.setFilter("udp", true);
                     } else if ("TCP".equals(filterOptions.getSelectedItem().toString())) {
-                        CAP.setFilter("tcp", true);
+                        captor.setFilter("tcp", true);
                     } else if ("IP".equals(filterOptions.getSelectedItem().toString())) {
-                        CAP.setFilter("ip", true);
+                        captor.setFilter("ip", true);
                     }
 
                     while (isCapturing) {
-                        CAP.processPacket(1, new Analyzer());
-                        packets.add(CAP.getPacket());
+                        captor.processPacket(1, new Analyzer());
+                        packets.add(captor.getPacket());
                     }
-                    CAP.close();
+                    captor.close();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -81,17 +80,123 @@ public class Sniffer extends JFrame {
                 this.interrupt();
             }
         };
-        THREAD.start();
+        thread.start();
     }
 
-    public static String convertToHex(String text) throws UnsupportedEncodingException {
+    void analyzePacket() {
+        Object obj = capturedPacketsTable.getModel().getValueAt(capturedPacketsTable.getSelectedRow(), 0);
+        if (Analyzer.rowAnalyzer.get((int) obj)[3] == "TCP") {
+            packetAnalyzerWindow.setText(
+                    "Packet No: " + Analyzer.rowAnalyzer.get((int) obj)[0]
+                            + "\nIP Version: " + Analyzer.rowAnalyzer.get((int) obj)[5]
+                            + "\nSource IP: " + Analyzer.rowAnalyzer.get((int) obj)[1]
+                            + "\nDestination IP: " + Analyzer.rowAnalyzer.get((int) obj)[2]
+                            + "\nLength: " + Analyzer.rowAnalyzer.get((int) obj)[4]
+                            + "\nProtocol: " + Analyzer.rowAnalyzer.get((int) obj)[3]
+                            + "\n\nSource Port: " + Analyzer.rowAnalyzer.get((int) obj)[6]
+                            + "\nDestination Port: " + Analyzer.rowAnalyzer.get((int) obj)[7]
+                            + "\nSequence No: " + Analyzer.rowAnalyzer.get((int) obj)[8]
+                            + "\n\nACK: " + Analyzer.rowAnalyzer.get((int) obj)[9]
+                            + "\nACK No: " + Analyzer.rowAnalyzer.get((int) obj)[10]
+                            + "\nWindow: " + Analyzer.rowAnalyzer.get((int) obj)[11]
+                            + "\nUrgent: " + Analyzer.rowAnalyzer.get((int) obj)[12]
+                            + "\nUrgent Pointer: " + Analyzer.rowAnalyzer.get((int) obj)[13]
+                            + "\n\nHeader: " + Analyzer.rowAnalyzer.get((int) obj)[14]
+                            + "\n\nData: " + Analyzer.rowAnalyzer.get((int) obj)[15]
+            );
+            try {
+                hexViewWindow.setText(hexRefactoring(convertToHex(packetAnalyzerWindow.getText())));
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (Analyzer.rowAnalyzer.get((int) obj)[3] == "UDP") {
+            packetAnalyzerWindow.setText(
+                    "Packet No: " + Analyzer.rowAnalyzer.get((int) obj)[0]
+                            + "\nIP Version: " + Analyzer.rowAnalyzer.get((int) obj)[5]
+                            + "\nSource IP: " + Analyzer.rowAnalyzer.get((int) obj)[1]
+                            + "\nDestination IP: " + Analyzer.rowAnalyzer.get((int) obj)[2]
+                            + "\nLength: " + Analyzer.rowAnalyzer.get((int) obj)[4]
+                            + "\nProtocol: " + Analyzer.rowAnalyzer.get((int) obj)[3]
+                            + "\n\nSource Port: " + Analyzer.rowAnalyzer.get((int) obj)[6]
+                            + "\nDestination Port: " + Analyzer.rowAnalyzer.get((int) obj)[7]
+                            + "\n\nHeader: " + Analyzer.rowAnalyzer.get((int) obj)[8]
+                            + "\n\nData: " + Analyzer.rowAnalyzer.get((int) obj)[9]
+            );
+
+            try {
+                hexViewWindow.setText(hexRefactoring(convertToHex(packetAnalyzerWindow.getText())));
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (Analyzer.rowAnalyzer.get((int) obj)[3] == "IP") {
+            packetAnalyzerWindow.setText(
+                    "Packet No: " + Analyzer.rowAnalyzer.get((int) obj)[0]
+                            + "\nIP Version: " + Analyzer.rowAnalyzer.get((int) obj)[5]
+                            + "\nSource IP: " + Analyzer.rowAnalyzer.get((int) obj)[1]
+                            + "\nDestination IP: " + Analyzer.rowAnalyzer.get((int) obj)[2]
+                            + "\nLength: " + Analyzer.rowAnalyzer.get((int) obj)[4]
+                            + "\n\nProtocol: " + Analyzer.rowAnalyzer.get((int) obj)[6]
+                            + "\n\nOffset: " + Analyzer.rowAnalyzer.get((int) obj)[7]
+                            + "\nHop Limit: " + Analyzer.rowAnalyzer.get((int) obj)[8]
+                            + "\nPriority: " + Analyzer.rowAnalyzer.get((int) obj)[9]
+                            + "\nFlow Label: " + Analyzer.rowAnalyzer.get((int) obj)[10]
+                            + "\n\nHeader: " + Analyzer.rowAnalyzer.get((int) obj)[11]
+                            + "\n\nData: " + Analyzer.rowAnalyzer.get((int) obj)[12]
+            );
+
+            try {
+                hexViewWindow.setText(hexRefactoring(convertToHex(packetAnalyzerWindow.getText())));
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    static String convertToHex(String text) throws UnsupportedEncodingException {
         return DatatypeConverter.printHexBinary(text.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String hexRefactoring(String text) {
-        return text.replaceAll("(.{32})", "$1\n").replaceAll("..(?!$)", "$0 ");
+    static String hexRefactoring(String hex) {
+        return hex.replaceAll("(.{32})", "$1\n").replaceAll("..(?!$)", "$0 ");
     }
 
+    void printWriterExport() {
+        try {
+            File exportFile = new File("Export Data.txt");
+            PrintWriter printWriter = new PrintWriter(exportFile);
+
+            for (Packet packet : packets)
+                if (packet != null) printWriter.println(packet.toString());
+
+            printWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void jWriterExport() {
+        thread = new ThreadManager() {
+            public Object construct() {
+                writer = null;
+                try {
+                    captor = JpcapCaptor.openDevice(NETWORK_INTERFACES[INDEX], 65535, false, 20);
+                    writer = JpcapWriter.openDumpFile(captor, "Export Data.txt");
+                    for (int i = 0; i < ITERATOR; i++)
+                        writer.writePacket(packets.get(i));
+                    writer.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return 0;
+            }
+            public void finished() {
+                this.interrupt();
+            }
+        };
+        thread.start();
+    }
 
     public static Button stopButton;
     public static Button exportButton;
@@ -134,6 +239,7 @@ public class Sniffer extends JFrame {
         setTitle("Packet Sniffer Open Beta v1.0");
         setName("Packet Sniffer Open Beta v1.0");
         var contentPane = getContentPane();
+        setResizable(false);
 
         //======== toolBar ========
         {
@@ -281,75 +387,7 @@ public class Sniffer extends JFrame {
     }
 
     private void capturedPacketMouseClicked(MouseEvent evt) {
-
-        Object obj = capturedPacketsTable.getModel().getValueAt(capturedPacketsTable.getSelectedRow(), 0);
-        if (Analyzer.rowAnalyzer.get((int) obj)[3] == "TCP") {
-            packetAnalyzerWindow.setText(
-                    "Packet No: " + Analyzer.rowAnalyzer.get((int) obj)[0]
-                            + "\nIP Version: " + Analyzer.rowAnalyzer.get((int) obj)[5]
-                            + "\nSource IP: " + Analyzer.rowAnalyzer.get((int) obj)[1]
-                            + "\nDestination IP: " + Analyzer.rowAnalyzer.get((int) obj)[2]
-                            + "\nLength: " + Analyzer.rowAnalyzer.get((int) obj)[4]
-                            + "\nProtocol: " + Analyzer.rowAnalyzer.get((int) obj)[3]
-                            + "\n\nSource Port: " + Analyzer.rowAnalyzer.get((int) obj)[6]
-                            + "\nDestination Port: " + Analyzer.rowAnalyzer.get((int) obj)[7]
-                            + "\nSequence No: " + Analyzer.rowAnalyzer.get((int) obj)[8]
-                            + "\n\nACK: " + Analyzer.rowAnalyzer.get((int) obj)[9]
-                            + "\nACK No: " + Analyzer.rowAnalyzer.get((int) obj)[10]
-                            + "\nWindow: " + Analyzer.rowAnalyzer.get((int) obj)[11]
-                            + "\nUrgent: " + Analyzer.rowAnalyzer.get((int) obj)[12]
-                            + "\nUrgent Pointer: " + Analyzer.rowAnalyzer.get((int) obj)[13]
-                            + "\n\nHeader: " + Analyzer.rowAnalyzer.get((int) obj)[14]
-                            + "\n\nData: " + Analyzer.rowAnalyzer.get((int) obj)[15]
-            );
-            try {
-                hexViewWindow.setText(hexRefactoring(convertToHex(packetAnalyzerWindow.getText())));
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else if (Analyzer.rowAnalyzer.get((int) obj)[3] == "UDP") {
-            packetAnalyzerWindow.setText(
-                    "Packet No: " + Analyzer.rowAnalyzer.get((int) obj)[0]
-                            + "\nIP Version: " + Analyzer.rowAnalyzer.get((int) obj)[5]
-                            + "\nSource IP: " + Analyzer.rowAnalyzer.get((int) obj)[1]
-                            + "\nDestination IP: " + Analyzer.rowAnalyzer.get((int) obj)[2]
-                            + "\nLength: " + Analyzer.rowAnalyzer.get((int) obj)[4]
-                            + "\nProtocol: " + Analyzer.rowAnalyzer.get((int) obj)[3]
-                            + "\n\nSource Port: " + Analyzer.rowAnalyzer.get((int) obj)[6]
-                            + "\nDestination Port: " + Analyzer.rowAnalyzer.get((int) obj)[7]
-                            + "\n\nHeader: " + Analyzer.rowAnalyzer.get((int) obj)[8]
-                            + "\n\nData: " + Analyzer.rowAnalyzer.get((int) obj)[9]
-            );
-
-            try {
-                hexViewWindow.setText(hexRefactoring(convertToHex(packetAnalyzerWindow.getText())));
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else if (Analyzer.rowAnalyzer.get((int) obj)[3] == "IP") {
-            packetAnalyzerWindow.setText(
-                    "Packet No: " + Analyzer.rowAnalyzer.get((int) obj)[0]
-                            + "\nIP Version: " + Analyzer.rowAnalyzer.get((int) obj)[5]
-                            + "\nSource IP: " + Analyzer.rowAnalyzer.get((int) obj)[1]
-                            + "\nDestination IP: " + Analyzer.rowAnalyzer.get((int) obj)[2]
-                            + "\nLength: " + Analyzer.rowAnalyzer.get((int) obj)[4]
-                            + "\n\nProtocol: " + Analyzer.rowAnalyzer.get((int) obj)[6]
-                            + "\n\nOffset: " + Analyzer.rowAnalyzer.get((int) obj)[7]
-                            + "\nHop Limit: " + Analyzer.rowAnalyzer.get((int) obj)[8]
-                            + "\nPriority: " + Analyzer.rowAnalyzer.get((int) obj)[9]
-                            + "\nFlow Label: " + Analyzer.rowAnalyzer.get((int) obj)[10]
-                            + "\n\nHeader: " + Analyzer.rowAnalyzer.get((int) obj)[11]
-                            + "\n\nData: " + Analyzer.rowAnalyzer.get((int) obj)[12]
-            );
-
-            try {
-                hexViewWindow.setText(hexRefactoring(convertToHex(packetAnalyzerWindow.getText())));
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        analyzePacket();
         hexViewWindow.setCaretPosition(0);
         packetAnalyzerWindow.setCaretPosition(0);
     }
@@ -358,14 +396,16 @@ public class Sniffer extends JFrame {
         isCapturing = true;
         capture();
         exportButton.setEnabled(!isCapturing);
+//        captureButton.setEnabled(!isCapturing);
         filterOptions.setEnabled(!isCapturing);
         interfacesListButton.setEnabled(!isCapturing);
     }
 
     private void stopButtonAction(ActionEvent evt) {
         isCapturing = false;
-        THREAD.finished();
+        thread.finished();
         exportButton.setEnabled(!isCapturing);
+        captureButton.setEnabled(!isCapturing);
         filterOptions.setEnabled(!isCapturing);
         interfacesListButton.setEnabled(!isCapturing);
     }
@@ -375,26 +415,7 @@ public class Sniffer extends JFrame {
     }
 
     private void exportButtonAction(ActionEvent evt) {
-        THREAD = new ThreadManager() {
-            public Object construct() {
-                writer = null;
-                try {
-                    CAP = JpcapCaptor.openDevice(NETWORK_INTERFACES[INDEX], 65535, false, 20);
-                    writer = JpcapWriter.openDumpFile(CAP, "Export Data.txt");
-                } catch (IOException ex) {
-                    Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                for (int i = 0; i < ITERATOR; i++)
-                    writer.writePacket(packets.get(1));
-
-                return 0;
-            }
-
-            public void finished() {
-                this.interrupt();
-            }
-        };
-        THREAD.start();
+        printWriterExport();
+//        jWriterExport();
     }
 }
