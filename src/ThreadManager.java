@@ -2,10 +2,7 @@ import javax.swing.SwingUtilities;
 
 public abstract class ThreadManager {
 
-    private Object value;
     private final Threads threadInstance;
-
-    abstract Object construct();
 
     private static class Threads {
 
@@ -23,6 +20,9 @@ public abstract class ThreadManager {
             thread = null;
         }
     }
+
+    private Object value;
+    abstract Object construct();
 
     protected synchronized Object getValue() {
         return value;
