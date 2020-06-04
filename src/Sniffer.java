@@ -164,7 +164,7 @@ public class Sniffer extends JFrame {
 
     void printWriterExport() {
         try {
-            File exportFile = new File("Export Data.txt");
+            File exportFile = new File("Export Data " + System.currentTimeMillis() + ".txt");
             PrintWriter printWriter = new PrintWriter(exportFile);
 
             for (Packet packet : packets)
@@ -191,6 +191,7 @@ public class Sniffer extends JFrame {
                 }
                 return 0;
             }
+
             public void finished() {
                 this.interrupt();
             }
