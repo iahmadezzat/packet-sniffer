@@ -49,8 +49,7 @@ public class NetworkInterfaces extends JFrame {
         interfacesData += "</table>";
     }
 
-    public void ChooseInterface() {
-
+    public void ChooseNetworkInterface() {
         int choice = Integer.parseInt(selectionTextField.getText());
         if (choice >= 0 && choice < Sniffer.NETWORK_INTERFACES.length) {
             Sniffer.INDEX = choice;
@@ -103,6 +102,7 @@ public class NetworkInterfaces extends JFrame {
         setTitle("Interfaces List");
         setName("Interfaces list");
         var contentPane = getContentPane();
+        setResizable(false);
 
         //======== mainPane ========
         {
@@ -164,13 +164,13 @@ public class NetworkInterfaces extends JFrame {
     }
 
     private void selectButtonAction(ActionEvent evt) {
-        ChooseInterface();
+        ChooseNetworkInterface();
         setVisible(false);
     }
 
     private void selectTextFieldKeyPressed(KeyEvent evt) {
         if (evt.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
-            ChooseInterface();
+            ChooseNetworkInterface();
             setVisible(false);
         }
     }
